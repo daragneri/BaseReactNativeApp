@@ -1,6 +1,6 @@
 import {View, Text, StyleSheet, Button} from "react-native"
 
-export default function HomeScreen({navigation}:any) {
+export default function SettingsScreen({navigation}:any) {
     return(
         <View style={styles.container}>
             <Text>Hello!</Text>
