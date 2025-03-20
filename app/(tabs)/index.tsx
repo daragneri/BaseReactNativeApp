@@ -20,19 +20,28 @@ import { View,
 function App() {
 
   const [userName, setUsername] = useState("");
-  const [userPassword, setPassword] = useState("");
-  const [erros, setErrors] = useState<{userName?: string; userPassword?: string }>({});
+  const [userPassword, setUserPassword] = useState("");
+  const [errors, setErrors] = useState<{userName?: string; userPassword?: string }>({});
 
 
 const validateForm = () => {
   let errors: {userName?: string; userPassword?: string} = {};
-  if(!userName) erros.userName = "User name is required!";
-  if(!userPassword) erros.userPassword = "Password is required!"
+  if(!userName) errors.userName = "User name is required!";
+  if(!userPassword) errors.userPassword = "Password is required!"
 
   setErrors(errors);
 
   return Object.keys(errors).length === 0;
-  
+
+}
+
+const handleSubmit = () => {
+  if (validateForm()) {
+    console.log("Submitted", userName, userPassword);
+    setUsername("");
+    setUserPassword("");
+    setErrors({});
+  }
 }
 
 
@@ -45,13 +54,23 @@ const validateForm = () => {
       value={userName}
       onChangeText={setUsername}
       placeholder='Enter your name' />
+      {
+        errors.userName ? <Text style={styles.errorText}>{errors.userName}</Text> : null
+      }
       <Text style={styles.label}>Password:</Text>
       <TextInput 
       style={styles.input} 
-      placeholder='Enter your password' 
+      placeholder='Enter your password'
+      value={userPassword}
+      onChangeText={setUserPassword}
       secureTextEntry/>
+      {
+        errors.userPassword ? <Text style={styles.errorText}>{errors.userPassword}</Text> : null
+      }
 
-      <Button title='Login' onPress={() => {}}/>
+      <Button title='Login' onPress={() => {
+        handleSubmit()
+      }}/>
     </View>
    </KeyboardAvoidingView>
   )
@@ -66,10 +85,9 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     backgroundColor: "red",
   },
-  text: {
-    fontSize: 24,
-    fontWeight: "bold",
-    marginBottom: 16
+  errorText: {
+    marginBottom: 16,
+    color: "red",
   },
   form: {
     backgroundColor: "white",
